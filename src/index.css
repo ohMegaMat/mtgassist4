@@ -1,0 +1,78 @@
+#sealedDeckImporter {
+  display: flex;
+}
+
+#sealedDeckImporter .divLeft {
+  display: inline;
+  margin: 0px 10px;
+}
+
+#sealedDeckImporter .divRight {
+  display: flex;
+  float: right;
+  margin: 0px 10px;
+}
+
+.buttonsListHorizontal {
+  overflow: hidden;
+}
+
+.buttonsListHorizontal li {
+  list-style: none;
+  display: inline;
+}
+
+.cardsList {
+  overflow: hidden;
+}
+
+.cardResult {
+  background-color: aliceblue;
+  border: 1px black;
+  margin: 2px;
+  list-style: none;
+  width: 100%;
+}
+
+.imageOnly {
+  float: left;
+  width: auto;
+}
+
+.imageOnly div {
+  position: relative;
+  width: 100%;
+}
+
+.imageOnly img {
+  position: relative;
+  width: 210px;
+  height: 300px;
+}
+
+.imageOnly .cardCount {
+  position: absolute;
+  top: 22px;
+  right: 2px;
+  background-color: aquamarine;
+  color: darkslategray;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 4px;
+}
+
+#deckStats {
+  display: flex;
+}
+
+#cardsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dropdown-menu {
+  height: 250px;
+  overflow-y: scroll;
+}
