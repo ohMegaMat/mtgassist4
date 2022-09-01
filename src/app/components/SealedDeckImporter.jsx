@@ -1,22 +1,40 @@
 import React, { Component } from "react";
 
-//const CARDS_DEFINITION = [
-//	{ id: 1, count: 1, imageUrl: "/db/cards/WAR/001.jpg", name: "Karn, the Great Creator" },
-//	{ id: 2, count: 1, imageUrl: "/db/cards/WAR/002.jpg", name: "Ugin, the Ineffable" },
-//	{ id: 3, count: 1, imageUrl: "/db/cards/WAR/003.jpg", name: "Ugin's Conjurant" },
-//	{ id: 4, count: 3, imageUrl: "/db/cards/WAR/004.jpg", name: "Ajani's Pridemate" }
-//  ];
-
-//var path = require("path");
-var CARDS_DEFINITION = require("../db/sets/snc.json");
+var CARDS_DEFINITION; // = require("../db/sets/dmu.json");
 
 class SealedDeckImporter extends Component {
   constructor() {
     super();
+    this.setToImport = React.createRef();
     this.deckToImport = React.createRef();
   }
 
+  importSetDefinition = async () => {
+    let selectedSet = this.setToImport.current.value;
+    let path = "../db/sets/"+ selectedSet +".json";
+    return fetch(path, {
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    )
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(myJson) {
+        CARDS_DEFINITION = myJson;
+      });
+  };
+
   importDeck = () => {
+    if( !CARDS_DEFINITION )
+    {
+      this.importSetDefinition()
+        .then( () => { this.importDeck() } );
+      return;
+    }
+
     let deck = { mainboard: [], sideboard: [] };
 
     // OBTIENE LA LISTA DE CARTAS DEL TEXTAREA
@@ -34,72 +52,17 @@ class SealedDeckImporter extends Component {
       let cardDefinition = CARDS_DEFINITION.find(
         cardDefinition => cardDefinition.name === card.cardName
       );
-      // console.log(card.cardName);
+//      console.log(cardDefinition);
       let newCard = Object.assign({}, cardDefinition);
       newCard.count = card.cardCount;
-      //newCard.manaWeight = this.getManaWeight(cardDefinition);
       newCard = this.setManaDetails(newCard, cardDefinition);
       newCard = this.setTypeDetails(newCard, cardDefinition);
-      console.log(newCard);
+//      console.log(newCard);
       return newCard;
     });
     // CREAR EL DECK CORRESPONDIENTE
     this.props.onImportedDeck(deck);
   };
-
-  /** The manaWeight defines de position in the cards list when orderer by color
-   * A=Black, B=Green, C=Red, D=White, E=Blue, M=Multicolor, V=Colorless, Z=Land
-   * followed by the total CMC number
-   */
-/*  getManaWeight = card => {
-    let manaWeight = 0;
-    let splitValue = card.manaCost
-      .replace(/{/g, "")
-      .replace(/}/g, "")
-      .split("");
-    splitValue.map(manaSymbol => {
-      if (!isNaN(manaSymbol)) manaWeight += parseInt(manaSymbol, 10);
-      else manaWeight += 1;
-      return manaSymbol;
-    });
-
-    if (card.colors.length < 1) {
-      if (card.types.includes("Land")) {
-        manaWeight = "Z";
-      }
-      else {
-        manaWeight = "V" + manaWeight;
-      }
-    } else if (card.colors.length > 1) {
-      manaWeight = "M" + manaWeight;
-    } else {
-      switch (card.colors[0]) {
-        case "B": {
-          manaWeight = "A" + manaWeight;
-          break;
-        }
-        case "G": {
-          manaWeight = "B" + manaWeight;
-          break;
-        }
-        case "R": {
-          manaWeight = "C" + manaWeight;
-          break;
-        }
-        case "W": {
-          manaWeight = "D" + manaWeight;
-          break;
-        }
-        case "U":
-        default: {
-          manaWeight = "E" + manaWeight;
-          break;
-        }
-      }
-    }
-    return manaWeight;
-  };
-*/
 
   setManaDetails = (card, cardDefinition) => {
     let manaWeight = 0;
@@ -116,10 +79,6 @@ class SealedDeckImporter extends Component {
       h: 0
     };
 
-//    let splitValue = cardDefinition.manaCost
-//      .replace(/{/g, "")
-//      .replace(/}/g, "")
-//      .split("");
     let splitValue = cardDefinition.manaCost
       .split("}{");
     splitValue.map(manaSymbol => {
@@ -166,6 +125,10 @@ class SealedDeckImporter extends Component {
     });
 
     // Determine manaWeight
+    /** The manaWeight defines de position in the cards list when orderer by color
+     * A=Black, B=Green, C=Red, D=White, E=Blue, M=Multicolor, V=Colorless, Z=Land
+     * followed by the total CMC number
+     */
     if (cardDefinition.colors.length < 1) {
       if (cardDefinition.type.split(" ").includes("Land")) {
         manaWeight = "Z";
@@ -234,7 +197,8 @@ class SealedDeckImporter extends Component {
       <div id="sealedDeckImporter">
         <div className="divLeft">
           <span>Expansion</span>
-          <select id="setToImport">
+          <select id="setToImport" ref={this.setToImport} onChange={this.importSetDefinition}>
+            <option value="dmu">Dominaria United</option>
             <option value="thb">Theros Beyond Death</option>
             <option value="m20">Core Set 2020</option>
             <option value="war">War of the Spark</option>
