@@ -44,6 +44,8 @@ class SealedDeckImporter extends Component {
       let indexOfCardName = line.indexOf(" ");
       let cardCount = parseInt(line.slice(0, indexOfCardName), 10);
       let cardName = line.slice(indexOfCardName + 1);
+      // REMOVER SET CODE SI ESTA PRESENTE (" [SET]")
+      cardName = cardName.split("[")[0].trim();
       return { cardCount: cardCount, cardName: cardName };
     });
     cards = cards.filter(card => !isNaN(card.cardCount));
@@ -52,7 +54,7 @@ class SealedDeckImporter extends Component {
       let cardDefinition = CARDS_DEFINITION.find(
         cardDefinition => cardDefinition.name === card.cardName
       );
-//      console.log(cardDefinition);
+      console.log(card.cardName +" "+ cardDefinition);
       let newCard = Object.assign({}, cardDefinition);
       newCard.count = card.cardCount;
       newCard = this.setManaDetails(newCard, cardDefinition);
@@ -198,6 +200,7 @@ class SealedDeckImporter extends Component {
         <div className="divLeft">
           <span>Expansion</span>
           <select id="setToImport" ref={this.setToImport} onChange={this.importSetDefinition}>
+            <option value="one">Phyrexia, All will be One</option>
             <option value="dmu">Dominaria United</option>
             <option value="thb">Theros Beyond Death</option>
             <option value="m20">Core Set 2020</option>
