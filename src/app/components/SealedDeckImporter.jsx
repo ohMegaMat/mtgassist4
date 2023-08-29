@@ -45,7 +45,19 @@ class SealedDeckImporter extends Component {
       let cardCount = parseInt(line.slice(0, indexOfCardName), 10);
       let cardName = line.slice(indexOfCardName + 1);
       // REMOVER SET CODE SI ESTA PRESENTE (" [SET]")
-      cardName = cardName.split("[")[0].trim();
+      let splitSet1 = cardName.split("[");
+      if( splitSet1.length > 1 )
+      {
+        let splitSet2 = splitSet1[1].split("]");
+        cardName = splitSet1[0].trim() + splitSet2[1].trim();
+      }
+      // REMOVER SET CODE SI ESTA PRESENTE (" (SET) Numero") (MTG Arena)
+      splitSet1 = cardName.split("(");
+      if( splitSet1.length > 1 )
+      {
+        let splitSet2 = splitSet1[1].split(")");
+        cardName = splitSet1[0].trim() + splitSet2[1].trim();
+      }
       return { cardCount: cardCount, cardName: cardName };
     });
     cards = cards.filter(card => !isNaN(card.cardCount));
@@ -81,8 +93,7 @@ class SealedDeckImporter extends Component {
       h: 0
     };
 
-    let splitValue = cardDefinition.manaCost
-      .split("}{");
+    let splitValue = cardDefinition.manaCost.split("}{");
     splitValue.map(manaSymbol => {
       manaSymbol = manaSymbol.replace(/{/g, "").replace(/}/g, "");
       if (!isNaN(manaSymbol)) {
@@ -200,6 +211,7 @@ class SealedDeckImporter extends Component {
         <div className="divLeft">
           <span>Expansion</span>
           <select id="setToImport" ref={this.setToImport} onChange={this.importSetDefinition}>
+            <option value="woe">Wilds of Eldraine</option>
             <option value="one">Phyrexia, All will be One</option>
             <option value="dmu">Dominaria United</option>
             <option value="thb">Theros Beyond Death</option>

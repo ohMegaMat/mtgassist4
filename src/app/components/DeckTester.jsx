@@ -39,7 +39,7 @@ class DeckTester extends Component {
         cards.push(cardCopy);
       }
     });
-    this.setState({ deck: deckCopy, library: cards });
+    this.setState({ deck: deckCopy, library: cards, hand: [], battlefield: [], graveyard: [], exile: [] });
   }
 
   updateState = state => {
@@ -102,6 +102,7 @@ class DeckTester extends Component {
   shuffleLibrary = (state, shouldSetState) => {
     let stateUpdated = Object.assign({}, state);
     stateUpdated.library = state.library.slice();
+    console.log("library count "+ stateUpdated.library.length);
     var i, j, temp;
     for (i = stateUpdated.library.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
@@ -310,26 +311,17 @@ class DeckTester extends Component {
             <button onClick={e => this.restart(e)}>Restart</button>
           </li>
           <li>
-            <button onClick={e => this.mulligan(e)}>Mulligan</button>
+            <button onClick={e => this.drawCards(this.state, true, 1, e)}>Draw</button>
           </li>
           <li>
-            <button onClick={e => this.drawCards(this.state, true, 1, e)}>
-              Draw
-            </button>
-          </li>
-          <li>
-            <button onClick={e => this.shuffleLibrary(this.state, true, e)}>
-              Shuffle
-            </button>
-          </li>
-          <li>
+            <button onClick={e => this.shuffleLibrary(this.state, true, e)}>Shuffle</button>
           </li>
         </ul>
-            <CardsListDropdown 
-              id="library" 
-              cards={this.state.library}
-              onCardClick={this.onCardClickShowMenu}
-            />
+        <CardsListDropdown 
+          id="library" 
+          cards={this.state.library}
+          onCardClick={this.onCardClickShowMenu}
+        />
         { this.renderCardsMenu() }
         <p>Hand ({this.state.hand.length})</p>
         <CardsList

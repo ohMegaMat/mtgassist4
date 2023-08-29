@@ -91,6 +91,36 @@ class SealedDeckEditor extends Component {
     this.props.onUpdateDeck(deckCopy);
   };
 
+  onClearMainBoardClick = () => {
+    let { deck } = this.props;
+    let deckCopy = Object.assign({}, deck);
+    deckCopy.mainboard = deck.mainboard.slice();
+    deckCopy.sideboard = deck.sideboard.slice();
+    
+    deckCopy.mainboard.forEach(cardInMainBoard => {
+      // SI NO ES TIERRA BASICA, PASAR LA CARTA AL SIDEBOARD
+      let landCard = LANDS_DEFINITION.find(card => card.id === cardInMainBoard.id);
+      if (landCard === undefined) {
+        let cardInSideBoard = deckCopy.sideboard.find(
+          card => card.id === cardInMainBoard.id
+        );
+        if (cardInSideBoard !== undefined) {
+          cardInSideBoard.count += cardInMainBoard.count;
+        } else {
+          let newCard = Object.assign({}, cardInMainBoard);
+          newCard.count = cardInMainBoard.count;
+          deckCopy.sideboard.push(newCard);
+        }
+      }
+    });
+
+    // LIMPIAR MAINBOARD
+    deckCopy.mainboard = [];
+
+    // ACTUALIZAR EL DECK
+    this.props.onUpdateDeck(deckCopy);
+  }
+
   addCard = cardId => {
     let { deck } = this.props;
     let deckCopy = Object.assign({}, deck);
@@ -169,6 +199,9 @@ class SealedDeckEditor extends Component {
           </li>
         </ul>
         <p>MainBoard ({this.getBoardSize(deck.mainboard)})</p>
+        <ul className="list-group">
+          <li className="list-group list-group-item-action"><button onClick={e => this.onClearMainBoardClick(e)}>Clear</button></li>
+        </ul>
         <DeckStats deck={deck} />
         <CardsList
           id="mb"

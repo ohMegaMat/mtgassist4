@@ -39,9 +39,9 @@ class SearchResult extends Component {
   renderImageOnly = result => {
 	return (
       <li id={result.id} key={result.id} class="cardResult imageOnly border border-light">
-        <img src={result.imageUrl} alt={result.name} width="110" height="150" />
-	  </li>
-	);
+          <img src={result.imageUrl} alt={result.name} width="110" height="150" />
+      </li>
+    );
   };
 
   render() {

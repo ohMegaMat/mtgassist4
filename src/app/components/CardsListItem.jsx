@@ -52,7 +52,9 @@ class CardsListItem extends Component {
       >
         <div>
           <img src={card.imageUrl} alt={card.name} width="110" height="150" />
-          <span className="cardCount">{card.count}</span>
+            { card.count > 1 && 
+            <span className="cardCount">{card.count}</span> 
+            }
         </div>
       </li>
     );

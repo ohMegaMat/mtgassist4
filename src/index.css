@@ -22,6 +22,12 @@
   display: inline;
 }
 
+.buttonsListHorizontal li button {
+  height: 30px;
+  width: 150px;
+  margin: 0px 5px;
+}
+
 .cardsList {
   overflow: hidden;
 }
@@ -52,7 +58,7 @@
 
 .imageOnly .cardCount {
   position: absolute;
-  top: 22px;
+  top: 32px;
   right: 2px;
   background-color: aquamarine;
   color: darkslategray;
@@ -70,6 +76,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.list-group .list-group-item-action button {
+  height: 30px;
+  width: 150px;
+  margin: 2px;
 }
 
 .dropdown-menu {
