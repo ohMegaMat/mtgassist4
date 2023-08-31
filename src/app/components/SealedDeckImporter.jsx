@@ -66,12 +66,13 @@ class SealedDeckImporter extends Component {
       let cardDefinition = CARDS_DEFINITION.find(
         cardDefinition => cardDefinition.name === card.cardName
       );
-      console.log(card.cardName +" "+ cardDefinition);
+      console.log(card.cardName +" "+ cardDefinition.manaCost);
       let newCard = Object.assign({}, cardDefinition);
       newCard.count = card.cardCount;
       newCard = this.setManaDetails(newCard, cardDefinition);
       newCard = this.setTypeDetails(newCard, cardDefinition);
 //      console.log(newCard);
+      console.log(newCard.name +" "+ JSON.stringify(newCard.manaDetails) +" "+ newCard.manaWeight +" "+ newCard.manaCost);
       return newCard;
     });
     // CREAR EL DECK CORRESPONDIENTE
@@ -81,6 +82,7 @@ class SealedDeckImporter extends Component {
   setManaDetails = (card, cardDefinition) => {
     let manaWeight = 0;
     let manaCost = 0;
+    // manaDetails -> u: blue symbols, b: black, w: white, r: red, g: green, explicitC: wastes, x: , c: colorless, h:
     let manaDetails = {
       u: 0,
       b: 0,
@@ -93,8 +95,13 @@ class SealedDeckImporter extends Component {
       h: 0
     };
 
-    let splitValue = cardDefinition.manaCost.split("}{");
-    splitValue.map(manaSymbol => {
+    // Double cards have double mana cost, separated by " // "
+    let splitCosts = cardDefinition.manaCost.split(" // ");
+
+    // Determine main spell mana details
+    let mainSpell = splitCosts[0];
+    let mainSpellSplitValue = mainSpell.split("}{");
+    mainSpellSplitValue.map(manaSymbol => {
       manaSymbol = manaSymbol.replace(/{/g, "").replace(/}/g, "");
       if (!isNaN(manaSymbol)) {
         manaWeight += parseInt(manaSymbol, 10);
@@ -136,6 +143,16 @@ class SealedDeckImporter extends Component {
       }
       return manaSymbol;
     });
+
+    // Determine secondary spell mana details if exists
+//    if( splitCosts.length > 1 ) {
+//      let secondarySpell = splitCosts[1];
+//      let secondarySpellSplitValue = secondarySpell.split("}{");
+//      secondarySpellSplitValue.map(manaSymbol => {
+//        manaSymbol = manaSymbol.replace(/{/g, "").replace(/}/g, "");
+//        return manaSymbol;
+//      });
+//    }
 
     // Determine manaWeight
     /** The manaWeight defines de position in the cards list when orderer by color
