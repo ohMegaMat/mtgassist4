@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CardsList from "./CardsList";
+import CardsListFilter from "./CardsListFilter";
 import DeckStats from "./DeckStats";
 import { VIEW_STANDARD, VIEW_IMAGEONLY } from "../components/CardsListItem";
 
@@ -154,7 +154,7 @@ class SealedDeckEditor extends Component {
     return (
       <div id="sealedDeckEditor">
         <p>SideBoard ({this.getBoardSize(deck.sideboard)})</p>
-        <CardsList
+        <CardsListFilter
           id="sb"
           cards={deck.sideboard}
           onCardClick={this.onSideBoardCardClick}
@@ -203,7 +203,7 @@ class SealedDeckEditor extends Component {
           <li className="list-group list-group-item-action"><button onClick={e => this.onClearMainBoardClick(e)}>Clear</button></li>
         </ul>
         <DeckStats deck={deck} />
-        <CardsList
+        <CardsListFilter
           id="mb"
           cards={deck.mainboard}
           onCardClick={this.onMainBoardCardClick}

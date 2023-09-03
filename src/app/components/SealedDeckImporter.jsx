@@ -66,13 +66,12 @@ class SealedDeckImporter extends Component {
       let cardDefinition = CARDS_DEFINITION.find(
         cardDefinition => cardDefinition.name === card.cardName
       );
-      console.log(card.cardName +" "+ cardDefinition.manaCost);
+//      console.log(card.cardName +" "+ cardDefinition.manaCost);
       let newCard = Object.assign({}, cardDefinition);
       newCard.count = card.cardCount;
       newCard = this.setManaDetails(newCard, cardDefinition);
       newCard = this.setTypeDetails(newCard, cardDefinition);
-//      console.log(newCard);
-      console.log(newCard.name +" "+ JSON.stringify(newCard.manaDetails) +" "+ newCard.manaWeight +" "+ newCard.manaCost);
+//      console.log(newCard.name +" "+ JSON.stringify(newCard.manaDetails) +" "+ newCard.manaWeight +" "+ newCard.manaCost);
       return newCard;
     });
     // CREAR EL DECK CORRESPONDIENTE
