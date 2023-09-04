@@ -61,6 +61,20 @@ class SealedDeckImporter extends Component {
       return { cardCount: cardCount, cardName: cardName };
     });
     cards = cards.filter(card => !isNaN(card.cardCount));
+
+    // JOIN REPEATED CARDS (CAN HAPPEN WHEN SOME ARE FOIL OR DIFFERENT SET/ART)
+    let tempCards = [];
+    cards.forEach(card => {
+      let tempCard = tempCards.find(otherCard => otherCard.cardName === card.cardName);
+      if(tempCard === undefined) {
+        tempCards.push(card);
+      }
+      else{
+        tempCard.cardCount += card.cardCount;
+      }
+    });
+    cards = tempCards;
+
     // MATCH CADA CARTA DEL TEXTAREA CON LA CARTA DE LA DB Y LA AGREGA AL SIDEBOARD
     deck.sideboard = cards.map(card => {
       let cardDefinition = CARDS_DEFINITION.find(
