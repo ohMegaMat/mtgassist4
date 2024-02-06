@@ -63,17 +63,17 @@ class SealedDeckImporter extends Component {
     cards = cards.filter(card => !isNaN(card.cardCount));
 
     // JOIN REPEATED CARDS (CAN HAPPEN WHEN SOME ARE FOIL OR DIFFERENT SET/ART)
-    let tempCards = [];
-    cards.forEach(card => {
-      let tempCard = tempCards.find(otherCard => otherCard.cardName === card.cardName);
-      if(tempCard === undefined) {
-        tempCards.push(card);
-      }
-      else{
-        tempCard.cardCount += card.cardCount;
-      }
-    });
-    cards = tempCards;
+    //    let tempCards = [];
+    //    cards.forEach(card => {
+    //      let tempCard = tempCards.find(otherCard => otherCard.cardName === card.cardName);
+    //      if(tempCard === undefined) {
+    //        tempCards.push(card);
+    //      }
+    //      else{
+    //        tempCard.cardCount += card.cardCount;
+    //      }
+    //    });
+    //    cards = tempCards;
 
     // MATCH CADA CARTA DEL TEXTAREA CON LA CARTA DE LA DB Y LA AGREGA AL SIDEBOARD
     deck.sideboard = cards.map(card => {
@@ -241,6 +241,8 @@ class SealedDeckImporter extends Component {
         <div className="divLeft">
           <span>Expansion</span>
           <select id="setToImport" ref={this.setToImport} onChange={this.importSetDefinition}>
+            <option value="mkm">Murders at Karlov Manor</option>
+            <option value="lci">Lost Caves of Ixalan</option>
             <option value="woe">Wilds of Eldraine</option>
             <option value="one">Phyrexia, All will be One</option>
             <option value="dmu">Dominaria United</option>

@@ -22,6 +22,7 @@ class CardsListDropdown extends Component {
   renderCards = (cards) => {
     let cardList = cards.map((card, i) => (
       <DropdownItem
+        key={this.props.id + "_card_" + i}
         onClick={e => this.props.onCardClick(card, this.props.id + "_card_" + i, e)}
       >
         { card.name }
