@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.css'
 import CardsList from "./CardsList";
 import CardsListDropdown from "./CardsListDropdown";
-import { VIEW_STANDARD, VIEW_IMAGEONLY } from "../components/CardsListItem";
+import { /*VIEW_STANDARD,*/ VIEW_IMAGEONLY } from "../components/CardsListItem";
 
 class DeckTester extends Component {
   constructor(props) {

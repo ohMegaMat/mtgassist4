@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CardsListFilter from "./CardsListFilter";
 import DeckStats from "./DeckStats";
-import { VIEW_STANDARD, VIEW_IMAGEONLY } from "../components/CardsListItem";
+import { /*VIEW_STANDARD,*/ VIEW_IMAGEONLY } from "../components/CardsListItem";
 
 const LANDS_DEFINITION = [
   { id: 250, types: ["Land"], imageUrl: "/db/cards/Lands/plains.jpg", name: "Plains" },
