@@ -5,13 +5,13 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "bootstrap": "5.2.3",
+    "bootstrap": "^5.3.2",
     "highcharts": "8.0.0",
     "highcharts-react-official": "2.2.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-scripts": "2.1.8",
-    "reactstrap": "9.0.0"
+    "reactstrap": "^9.2.2"
   },
   "devDependencies": {
     "typescript": "3.3.3"
